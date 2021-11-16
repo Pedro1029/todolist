@@ -1,23 +1,40 @@
 import './AddTarefa.css';
-import { Fab } from '@material-ui/core'
+import { Fab, TextField, Card, Button } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import './AddTarefa.css'
-
-import {useState} from 'react'
+import { useState } from 'react'
 
 
 export function AddTarefa() {
 
-    const [adding, setAdding] = useState(!adding)
+    const [adding, setAdding] = useState(false)
 
-    function onClickToAdd(){
+    function onClickToAdd() {
         setAdding(!adding)
         console.log(adding)
     }
 
     return (
         <>
-            {<Fab onClick={onClickToAdd}className={'fab-button'} color="primary" aria-label="Add"><AddIcon /></Fab>}
+            {adding &&
+                <Card>
+                    <TextField
+                        autoFocus={true}
+                        //margin="dense"
+                        id="description"
+                        label="Tarefa"
+                        //type="text"
+                        fullWidth={true}
+                    />
+                    <Button variant='contained' className="Button">
+                        Salvar
+                    </Button>
+                    <Button variant='outlined' color="secondary">
+                        Cancelar
+                    </Button>
+                </Card>}
+
+            {<Fab onClick={onClickToAdd} className={'fab-button'} color="primary"><AddIcon /></Fab>}
         </>
     )
 
