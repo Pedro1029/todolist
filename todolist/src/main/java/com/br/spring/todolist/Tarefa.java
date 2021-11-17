@@ -25,7 +25,7 @@ public class Tarefa implements Serializable {
     @Column
     private String titulo;
     @Column
-    private Boolean feito = false;
+    private Boolean feita = false;
 
     public Long getId() {
         return id;
@@ -43,12 +43,12 @@ public class Tarefa implements Serializable {
         this.titulo = titulo;
     }
 
-    public Boolean getFeito() {
-        return feito;
+    public Boolean getFeita() {
+        return feita;
     }
 
-    public void setFeito(Boolean feito) {
-        this.feito = feito;
+    public void setFeita(Boolean feita) {
+        this.feita = feita;
     }
 
     @Override

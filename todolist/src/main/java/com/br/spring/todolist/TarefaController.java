@@ -37,7 +37,7 @@ public class TarefaController {
 
         var tarefa = tarefas.findById(id).orElseThrow(IllegalArgumentException::new);
 
-        tarefa.setFeito(true);
+        tarefa.setFeita(true);
 
         return tarefas.save(tarefa);
     }
@@ -47,13 +47,13 @@ public class TarefaController {
 
         var tarefa = tarefas.findById(id).orElseThrow(IllegalArgumentException::new);
 
-        tarefa.setFeito(false);
+        tarefa.setFeita(false);
 
         return tarefas.save(tarefa);
     }
 
     @PostMapping(path = "/tarefa", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Tarefa save(@RequestBody Tarefa tarefa) {
+    public Tarefa salvar(@RequestBody Tarefa tarefa) {
         return tarefas.save(tarefa);
 
     }
