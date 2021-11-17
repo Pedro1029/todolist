@@ -22,14 +22,14 @@ public class TarefaController {
         this.tarefas = tarefas;
     }
 
-    @GetMapping(path = "/tarefas/pendentes", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Tarefa> findAllPendentes() {
-        return tarefas.findAllByFeitas(false);
+    @GetMapping(path = "/tarefas/pendente", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Tarefa> findAllPendente() {
+        return tarefas.findAllByFeita(false);
     }
 
-    @GetMapping(path = "/tarefas/feitas", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Tarefa> findAllFeitas() {
-        return tarefas.findAllByFeitas(true);
+    @GetMapping(path = "/tarefas/feita", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Tarefa> findAllFeita() {
+        return tarefas.findAllByFeita(true);
     }
 
     @PatchMapping(path = "tarefa/{id}/marcar-como-feita", produces = MediaType.APPLICATION_JSON_VALUE)

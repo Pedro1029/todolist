@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface Tarefas extends JpaRepository<Tarefa, Long>{
     
-    List<Tarefa> findAllByFeitas(@Param("feitas")boolean done);
+    List<Tarefa> findAllByFeita(@Param("feitas")boolean feita);
     
     
 }

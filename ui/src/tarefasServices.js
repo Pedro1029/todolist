@@ -1,4 +1,4 @@
-export function save(task) {
+export function salvar(tarefa) {
     const headers = new Headers({
         "Content-Type": "application/json",
     });
@@ -7,7 +7,7 @@ export function save(task) {
         headers: headers,
         mode: 'cors',
         cache: 'default',
-        body: JSON.stringify(task)
+        body: JSON.stringify(tarefa)
     };
-    return fetch(`http://localhost:8080//tarefa`, request).then(response => response.json());
+    return fetch(`http://localhost:8080/tarefa`, request).then(response => response.json());
 }
