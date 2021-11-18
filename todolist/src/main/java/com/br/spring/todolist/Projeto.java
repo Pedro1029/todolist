@@ -1,6 +1,7 @@
 package com.br.spring.todolist;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,27 +10,23 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import org.hibernate.annotations.ListIndexBase;
 
 @Entity
-@Table(name = "tarefas")
-public class Tarefa implements Serializable {
+@Table(name = "projetos")
+public class Projeto implements Serializable {
 
     @Id
     @Column
-    @SequenceGenerator(name = "seq_tarefa",
-            sequenceName = "seq_tarefa",
+    @SequenceGenerator(name = "seq_projeto",
+            sequenceName = "seq_projeto",
             allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "seq_tarefa")
+            generator = "seq_projeto")
     private Long id;
     @Column
     private String titulo;
-    @Column
-    private Boolean feita = false;
     
-    @Column(name="id_projeto")
-    private Integer projeto;
-
     public Long getId() {
         return id;
     }
@@ -44,22 +41,6 @@ public class Tarefa implements Serializable {
 
     public void setTitulo(String titulo) {
         this.titulo = titulo;
-    }
-
-    public Boolean getFeita() {
-        return feita;
-    }
-
-    public void setFeita(Boolean feita) {
-        this.feita = feita;
-    }
-
-    public Integer getProjeto() {
-        return projeto;
-    }
-
-    public void setProjeto(Integer projeto) {
-        this.projeto = projeto;
     }
 
     @Override
@@ -80,7 +61,7 @@ public class Tarefa implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Tarefa other = (Tarefa) obj;
+        final Projeto other = (Projeto) obj;
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }

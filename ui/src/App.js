@@ -1,13 +1,48 @@
 import './App.css';
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import { Button, Icon, List, ListItem, ListItemIcon, ListItemText, } from '@material-ui/core'
+import { Button, Icon, List, ListItem, ListItemIcon, ListItemText, Card, Checkbox } from '@material-ui/core'
 import { AddTarefa } from './AddTarefa'
+import { findAllPendentes, findAllFeitas, marcarComoFeita, marcarComoPendente } from './tarefasServices'
 
 function App() {
 
   const [showMenu, setShowMenu] = useState(true)
+  const [tarefas, setTarefas] = useState([])
+  const [path, setPath] = useState(null)
+
+  useEffect(() => {
+    async function fetchData(){
+      await findAll();
+    }
+    fetchData()
+  }, []);
+
+  async function findAll(sit) {
+    
+    if (sit) {
+      const tarefasPendentes = await findAllPendentes();
+      setTarefas(tarefasPendentes)
+      setPath(false)
+    } else {
+      const tarefasFeitas = await findAllFeitas();
+      setTarefas(tarefasFeitas)
+      setPath(true)
+    }
+    
+  }
+
+  async function onChange(target, tarefa) {
+    console.log('dsdsdsds')
+    if (target.checked) {
+      await marcarComoFeita(tarefa);
+      findAll(true);
+    } else {
+      await marcarComoPendente(tarefa);
+      findAll(false);
+    }
+  }
 
   return (
 
@@ -25,13 +60,13 @@ function App() {
 
             <List>
 
-              <ListItem button={true} component={Link} {...{ to: "/pendentes" }}>
+              <ListItem button={true} component={Link} {...{ to: "/pendentes" }} onClick={() => findAll(true)}>
 
                 <ListItemIcon><Icon>list</Icon></ListItemIcon>
                 <ListItemText>Pendentes</ListItemText>
 
               </ListItem>
-              <ListItem button={true} component={Link} {...{ to: "/feitas" }}>
+              <ListItem button={true} component={Link} {...{ to: "/feitas" }} onClick={() => findAll(false)}>
 
                 <ListItemIcon><Icon>checked</Icon></ListItemIcon>
                 <ListItemText>Feitas</ListItemText>
@@ -45,9 +80,19 @@ function App() {
 
             <div className="sidebar-body-div-outlet">
 
+              <ul>
+                {tarefas.filter(tarefa => tarefa.feita === path).map(tarefa => {
+                  return (
+                    <Card className={'item-list-card'} key={tarefa.id}>
+                      <Checkbox checked={tarefa.feita} value={tarefa.id} onChange={({ target }) => onChange(target, tarefa)} />
+                      {tarefa.titulo}
+                    </Card>
+                  )
+                })}
+              </ul>
+
               <Routes>
-                <Route path="pendentes" element={<AddTarefa />} />
-                <Route path="feitas" element={<AddTarefa />} />
+                <Route path="pendentes" element={<AddTarefa />}/>
               </Routes>
 
             </div>

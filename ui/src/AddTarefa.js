@@ -15,6 +15,7 @@ export function AddTarefa() {
         await salvar({
             titulo,
             feita: false,
+            id_projeto: 1,
         });
     }
 
@@ -23,31 +24,34 @@ export function AddTarefa() {
         console.log(adding)
     }
 
+    
+
     return (
         <>
-            {adding &&
-                <Card>
-                    <TextField
-                        autoFocus={true}
-                        margin="dense"
-                        id="description"
-                        label="Tarefa"
-                        type="text"
-                        fullWidth={true}
-                        onChange={(event) => setTitulo(event.target.value)}
+            <ul>
+                {adding &&
+                    <Card>
+                        <TextField
+                            autoFocus={true}
+                            margin="dense"
+                            id="description"
+                            label="Tarefa"
+                            type="text"
+                            fullWidth={true}
+                            onChange={(event) => setTitulo(event.target.value)}
 
-                    />
-                    <Button variant='contained' color="primary" onClick={() => aoSalvar()}>
-                        Salvar
-                    </Button>
-                    <Button variant='contained' color="secondary" onClick={() => setAdding(false)}>
-                        Cancelar
-                    </Button>
-                </Card>}
+                        />
+                        <Button variant='contained' color="primary" onClick={() => aoSalvar()}>
+                            Salvar
+                        </Button>
+                        <Button variant='contained' color="secondary" onClick={() => setAdding(false)}>
+                            Cancelar
+                        </Button>
+                    </Card>}
+            </ul>
 
             {<Fab onClick={onClickToAdd} className={'fab-button'} color="primary"><AddIcon /></Fab>}
         </>
     )
-
 
 }
