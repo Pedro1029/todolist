@@ -14,21 +14,23 @@ function App() {
 
   useEffect(() => {
     async function fetchData(){
-      await findAll();
+      await findAllTarefas();
     }
     fetchData()
   }, []);
 
-  async function findAll(sit) {
+  async function findAllTarefas(sit) {
     
     if (sit) {
       const tarefasPendentes = await findAllPendentes();
       setTarefas(tarefasPendentes)
       setPath(false)
+      console.log(tarefasPendentes)
     } else {
       const tarefasFeitas = await findAllFeitas();
       setTarefas(tarefasFeitas)
       setPath(true)
+      console.log(tarefasFeitas)
     }
     
   }
@@ -37,10 +39,10 @@ function App() {
     console.log('dsdsdsds')
     if (target.checked) {
       await marcarComoFeita(tarefa);
-      findAll(true);
+      findAllTarefas(true);
     } else {
       await marcarComoPendente(tarefa);
-      findAll(false);
+      findAllTarefas(false);
     }
   }
 
@@ -60,13 +62,13 @@ function App() {
 
             <List>
 
-              <ListItem button={true} component={Link} {...{ to: "/pendentes" }} onClick={() => findAll(true)}>
+              <ListItem button={true} component={Link} {...{ to: "/pendentes" }} onClick={() => findAllTarefas(true)}>
 
                 <ListItemIcon><Icon>list</Icon></ListItemIcon>
                 <ListItemText>Pendentes</ListItemText>
 
               </ListItem>
-              <ListItem button={true} component={Link} {...{ to: "/feitas" }} onClick={() => findAll(false)}>
+              <ListItem button={true} component={Link} {...{ to: "/feitas" }} onClick={() => findAllTarefas(false)}>
 
                 <ListItemIcon><Icon>checked</Icon></ListItemIcon>
                 <ListItemText>Feitas</ListItemText>

@@ -4,9 +4,12 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -27,8 +30,9 @@ public class Tarefa implements Serializable {
     @Column
     private Boolean feita = false;
     
-    @Column(name="id_projeto")
-    private Integer projeto;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_projeto")
+    private Projeto projeto;
 
     public Long getId() {
         return id;
@@ -54,11 +58,11 @@ public class Tarefa implements Serializable {
         this.feita = feita;
     }
 
-    public Integer getProjeto() {
+    public Projeto getProjeto() {
         return projeto;
     }
 
-    public void setProjeto(Integer projeto) {
+    public void setProjeto(Projeto projeto) {
         this.projeto = projeto;
     }
 

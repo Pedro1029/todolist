@@ -65,3 +65,16 @@ export function marcarComoPendente(tarefa) {
     };
     return fetch(`http://localhost:8080/tarefa/${tarefa.id}/marcar-como-pendente`, request).then(response => response.json());
 }
+
+export function findAllProjetos(){
+    const headers = new Headers({
+        "Content-Type": "application/json",
+    });
+    const request = {
+        method: 'GET',
+        headers: headers,
+        mode: 'cors',
+        cache: 'default',
+    };
+    return fetch('http://localhost:8080/projetos', request).then(response => response.json());
+}

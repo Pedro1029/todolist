@@ -5,12 +5,13 @@ import java.util.List;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import org.hibernate.annotations.ListIndexBase;
 
 @Entity
 @Table(name = "projetos")
@@ -27,6 +28,9 @@ public class Projeto implements Serializable {
     @Column
     private String titulo;
     
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "projeto")
+    private List<Tarefa> tarefas;
+    
     public Long getId() {
         return id;
     }
@@ -41,6 +45,14 @@ public class Projeto implements Serializable {
 
     public void setTitulo(String titulo) {
         this.titulo = titulo;
+    }
+
+    public List<Tarefa> getTarefas() {
+        return tarefas;
+    }
+
+    public void setTarefas(List<Tarefa> tarefas) {
+        this.tarefas = tarefas;
     }
 
     @Override
