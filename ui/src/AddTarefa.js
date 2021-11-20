@@ -23,6 +23,7 @@ export function AddTarefa() {
     useEffect(() => {
         async function fetchData() {
             await findAll();
+            console.log('ddddddddd')
         }
         fetchData()
     }, []);
@@ -48,6 +49,9 @@ export function AddTarefa() {
             {
                 titulo,
                 feita: false,
+                projeto: {
+                    id: selectedProjeto,
+                }
 
             }
         );

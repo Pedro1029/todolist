@@ -12,12 +12,9 @@ function App() {
   const [tarefas, setTarefas] = useState([])
   const [path, setPath] = useState(null)
 
-  useEffect(() => {
-    async function fetchData(){
-      await findAllTarefas();
-    }
-    fetchData()
-  }, []);
+  useEffect(async () => {
+        await findAllTarefas();
+    }, []);
 
   async function findAllTarefas(sit) {
     
