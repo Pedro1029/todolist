@@ -25,14 +25,15 @@ public class Tarefa implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
             generator = "seq_tarefa")
     private Long id;
+    
     @Column
     private String titulo;
+    
     @Column
     private Boolean feita = false;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_projeto")
-    private Projeto projeto;
+    @Column(name = "id_projeto")
+    private Integer projetos;
 
     public Long getId() {
         return id;
@@ -58,12 +59,12 @@ public class Tarefa implements Serializable {
         this.feita = feita;
     }
 
-    public Projeto getProjeto() {
-        return projeto;
+    public Integer getProjeto() {
+        return projetos;
     }
 
-    public void setProjeto(Projeto projeto) {
-        this.projeto = projeto;
+    public void setProjeto(Integer projeto) {
+        this.projetos = projeto;
     }
 
     @Override

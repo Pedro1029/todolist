@@ -28,7 +28,7 @@ public class Projeto implements Serializable {
     @Column
     private String titulo;
     
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "projeto")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "projetos")
     private List<Tarefa> tarefas;
     
     public Long getId() {
