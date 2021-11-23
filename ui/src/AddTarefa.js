@@ -9,6 +9,7 @@ import InboxIcon from '@mui/icons-material/Inbox';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import Collapse from '@mui/material/Collapse';
+import App from './App.js'
 
 
 export function AddTarefa() {
@@ -21,17 +22,8 @@ export function AddTarefa() {
     const [selectedProjeto, setSelectedProjeto] = useState(null)
 
     useEffect(() => {
-        async function fetchData() {
-            await findAll();
-            console.log('ddddddddd')
-        }
-        fetchData()
-    }, []);
-
-    const mostraProjetos = () => {
-        setShowProjetos(!showProjetos);
         findAll();
-    }
+    }, [showProjetos]);
 
     async function findAll() {
         const listaProjetos = await findAllProjetos();
@@ -49,12 +41,11 @@ export function AddTarefa() {
             {
                 titulo,
                 feita: false,
-                projeto: {
-                    id: selectedProjeto,
-                }
-
+                projeto: selectedProjeto,
             }
         );
+
+        App().findAllTarefas(true)
     }
 
     function onClickToAdd() {
@@ -71,7 +62,7 @@ export function AddTarefa() {
                             onChange={(event) => setTitulo(event.target.value)}
                         />
                         <List>
-                            <ListItemButton onClick={() => mostraProjetos()}>
+                            <ListItemButton onClick={() => setShowProjetos(!showProjetos)}>
                                 <ListItemIcon>
                                     <AllInboxIcon />
                                 </ListItemIcon>
@@ -90,8 +81,8 @@ export function AddTarefa() {
                                 {projetos.map(projetos => {
                                     return (
                                         <List key={projetos.id}>
-                                            <ListItemButton selected={selectedProjeto === projetos.id} 
-                                            onClick={(event) => onSelectProjeto(event, projetos.id)}>
+                                            <ListItemButton selected={selectedProjeto === projetos.id}
+                                                onClick={(event) => onSelectProjeto(event, projetos.id)}>
                                                 <ListItemIcon><InboxIcon /></ListItemIcon>
                                                 <ListItemText>{projetos.titulo}</ListItemText>
                                             </ListItemButton>

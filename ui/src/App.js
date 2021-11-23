@@ -22,18 +22,16 @@ function App() {
       const tarefasPendentes = await findAllPendentes();
       setTarefas(tarefasPendentes)
       setPath(false)
-      console.log(tarefasPendentes)
+
     } else {
       const tarefasFeitas = await findAllFeitas();
       setTarefas(tarefasFeitas)
       setPath(true)
-      console.log(tarefasFeitas)
     }
     
   }
 
   async function onChange(target, tarefa) {
-    console.log('dsdsdsds')
     if (target.checked) {
       await marcarComoFeita(tarefa);
       findAllTarefas(true);
@@ -65,7 +63,7 @@ function App() {
                 <ListItemText>Pendentes</ListItemText>
 
               </ListItem>
-              <ListItem button={true} component={Link} {...{ to: "/feitas" }} onClick={() => findAllTarefas(false)}>
+              <ListItem button={true} component={Link} {...{ to: "/" }} onClick={() => findAllTarefas(false)}>
 
                 <ListItemIcon><Icon>checked</Icon></ListItemIcon>
                 <ListItemText>Feitas</ListItemText>
