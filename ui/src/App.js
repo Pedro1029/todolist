@@ -50,8 +50,8 @@ function App() {
               
 
               <Routes>
-                <Route path="pendentes" element={<AddTarefa feita={false}/>}/>
-                <Route path="feitas" element={<AddTarefa feita={true}/>}/>
+                <Route path="/pendentes" element={<AddTarefa feita={false}/>}/>
+                <Route path="/feitas" element={<AddTarefa feita={true}/>}/>
               </Routes>
 
             </div>
