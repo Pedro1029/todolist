@@ -1,5 +1,5 @@
 import './AddTarefa.css';
-import { Fab, TextField, Card, Button, List, ListItemIcon, ListItemText } from '@material-ui/core'
+import {Button, Fab, TextField, Card, List, ListItemIcon, ListItemText, Checkbox } from '@material-ui/core'
 import ListItemButton from '@mui/material/ListItemButton';
 import AddIcon from '@material-ui/icons/Add'
 import { useState, useEffect } from 'react'
@@ -9,27 +9,58 @@ import InboxIcon from '@mui/icons-material/Inbox';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import Collapse from '@mui/material/Collapse';
-import App from './App.js'
+import { findAllPendentes, findAllFeitas, marcarComoFeita, marcarComoPendente } from './tarefasServices'
 
 
-export function AddTarefa() {
+export function AddTarefa({ feita }) {
 
+    const [tarefas, setTarefas] = useState([])
     const [titulo, setTitulo] = useState(null)
-    const [projetos, setProjetos] = useState(null)
 
     const [adding, setAdding] = useState(false)
+
     const [showProjetos, setShowProjetos] = useState(false)
     const [selectedProjeto, setSelectedProjeto] = useState(null)
+    const [projetos, setProjetos] = useState(null)
+
+    useEffect(async () => {
+        await findAllTarefas();
+    }, [feita]);
+
+    async function findAllTarefas() {
+        console.log('findAllTarefas')
+        if (feita) {
+            const tarefasPendentes = await findAllPendentes();
+            setTarefas(tarefasPendentes);
+            console.log(tarefasPendentes);
+            console.log('findAllPendentes')
+        } else {
+            const tarefasFeitas = await findAllFeitas();
+            setTarefas(tarefasFeitas);
+            console.log(tarefasFeitas);
+            console.log('findAllFeitas')
+        }
+
+    }
+
+    async function onChange(target, tarefa) {
+        if (target.checked) {
+            await marcarComoFeita(tarefa);
+        } else {
+            await marcarComoPendente(tarefa);
+        }
+        await findAllTarefas();
+    }
+
+
 
     useEffect(() => {
-        findAll();
+        findProjetos();
     }, [showProjetos]);
 
-    async function findAll() {
+    async function findProjetos() {
         const listaProjetos = await findAllProjetos();
         setProjetos(listaProjetos);
-        console.log(listaProjetos);
-        console.log(showProjetos);
     }
 
     const onSelectProjeto = (event, index) => {
@@ -44,8 +75,9 @@ export function AddTarefa() {
                 projeto: selectedProjeto,
             }
         );
+            setAdding(false)
+       await findAllTarefas();
 
-        App().findAllTarefas(true)
     }
 
     function onClickToAdd() {
@@ -55,6 +87,16 @@ export function AddTarefa() {
     return (
         <>
             <ul>
+
+                {tarefas.filter(tarefa => tarefa.feita === feita).map(tarefa => {
+                    return (
+                        <Card className={'item-list-card'} key={tarefa.id}>
+                            <Checkbox checked={tarefa.feita} value={tarefa.id} onChange={({ target }) => onChange(target, tarefa)} />
+                            {tarefa.titulo}
+                        </Card>
+                    )
+                })}
+                <h1>ddsdsdsds</h1>
                 {adding &&
 
                     <Card>
@@ -103,7 +145,7 @@ export function AddTarefa() {
                 }
             </ul>
 
-            {<Fab onClick={onClickToAdd} className={'fab-button'} color="primary"><AddIcon /></Fab>}
+            {!feita && <Fab onClick={onClickToAdd} className={'fab-button'} color="primary"><AddIcon /></Fab>}
         </>
     )
 
