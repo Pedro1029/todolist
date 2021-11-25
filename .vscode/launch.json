@@ -5,6 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "java",
+            "name": "Launch TodolistApplication",
+            "request": "launch",
+            "mainClass": "com.br.spring.todolist.TodolistApplication",
+            "projectName": "todolist"
+        },
+        {
             "type": "pwa-chrome",
             "request": "launch",
             "name": "Debug React",
