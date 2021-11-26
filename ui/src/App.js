@@ -1,16 +1,14 @@
 import './App.css';
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import { Button, Icon, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
 import { AddTarefa } from './AddTarefa'
-
 
 function App() {
 
   const [showMenu, setShowMenu] = useState(true)
   
-
   return (
 
     <>
@@ -33,6 +31,7 @@ function App() {
                 <ListItemText>Pendentes</ListItemText>
 
               </ListItem>
+
               <ListItem button={true} component={Link} {...{ to: "/feitas" }}>
 
                 <ListItemIcon><Icon>checked</Icon></ListItemIcon>
@@ -47,8 +46,6 @@ function App() {
 
             <div className="sidebar-body-div-outlet">
 
-              
-
               <Routes>
                 <Route path="/pendentes" element={<AddTarefa feita={false}/>}/>
                 <Route path="/feitas" element={<AddTarefa feita={true}/>}/>
@@ -59,7 +56,6 @@ function App() {
           </div>
 
         </div>}
-
 
       </BrowserRouter>
     </>

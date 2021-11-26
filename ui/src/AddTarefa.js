@@ -3,13 +3,11 @@ import { Button, Fab, TextField, Card, List, ListItemIcon, ListItemText, Checkbo
 import ListItemButton from '@mui/material/ListItemButton';
 import AddIcon from '@material-ui/icons/Add'
 import { useState, useEffect } from 'react'
-import { salvar, findAllProjetos } from './tarefasServices'
+import { salvar, findAllProjetos, findAllPendentes, findAllFeitas, marcarComoFeita, marcarComoPendente } from './tarefasServices'
 import AllInboxIcon from '@mui/icons-material/AllInbox';
 import InboxIcon from '@mui/icons-material/Inbox';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
-import Collapse from '@mui/material/Collapse';
-import { findAllPendentes, findAllFeitas, marcarComoFeita, marcarComoPendente } from './tarefasServices'
+import { ExpandLess, ExpandMore } from '@mui/icons-material/';
+import { Collapse, Dialog } from '@mui/material';
 
 
 export function AddTarefa({ feita }) {
@@ -22,7 +20,7 @@ export function AddTarefa({ feita }) {
 
     const [showProjetos, setShowProjetos] = useState(false)
     const [selectedProjeto, setSelectedProjeto] = useState(null)
-    const [projetos, setProjetos] = useState(findAllProjetos())
+    const [projetos, setProjetos] = useState([])
 
     useEffect(async () => {
         await findAllTarefas();
@@ -30,25 +28,16 @@ export function AddTarefa({ feita }) {
 
     useEffect(() => {
         findProjetos();
-    }, [showProjetos]);
-
-    useEffect(() => {
-        findProjetos();
-    }, [feita]);
+    }, []);
 
     async function findAllTarefas() {
 
-        console.log('findAllTarefas')
         if (!feita) {
             const tarefasPendentes = await findAllPendentes();
             setTarefas(tarefasPendentes);
-            console.log(tarefasPendentes);
-            console.log('findAllPendentes')
         } else {
             const tarefasFeitas = await findAllFeitas();
             setTarefas(tarefasFeitas);
-            console.log(tarefasFeitas);
-            console.log('findAllFeitas')
         }
 
     }
@@ -65,6 +54,9 @@ export function AddTarefa({ feita }) {
     async function findProjetos() {
         const listaProjetos = await findAllProjetos();
         setProjetos(listaProjetos);
+        console.log('projetos');
+        console.log(projetos);
+
     }
 
     const onSelectProjeto = (event, index) => {
@@ -90,77 +82,115 @@ export function AddTarefa({ feita }) {
 
     return (
         <>
-            <List key={projetos.id}>
+            <List>
                 <ListItemButton onClick={() => setShowTarefas(!showTarefas)}>
                     <ListItemIcon>
                         <AllInboxIcon />
                     </ListItemIcon>
                     <ListItemText>
-                        Projetos
+                        Caixa de Entrada
                     </ListItemText>
                     {showTarefas ? <ExpandLess /> : <ExpandMore />}
                 </ListItemButton>
-                <ul>
-                    <Collapse in={showTarefas} timeout="auto" unmountOnExit>
-
-                        {tarefas.filter(tarefa => tarefa.feita === feita).map(tarefa => {
+                <Collapse in={showTarefas} timeout="auto" unmountOnExit>
+                    {tarefas.filter(tarefa => tarefa.feita === feita && tarefa.projeto === null).map(
+                        tarefa => {
                             return (
                                 <Card className={'item-list-card'} key={tarefa.id}>
                                     <Checkbox checked={tarefa.feita} value={tarefa.id} onChange={({ target }) => onChange(target, tarefa)} />
                                     {tarefa.titulo}
                                 </Card>
                             )
-                        })}
-                    </Collapse>
+                        }
+                    )}
+                </Collapse>
 
-                    {adding &&
-
-                        <Card>
-                            <TextField autoFocus={true} margin="dense" id="descricao" label="Tarefa" type="text" fullWidth={true}
-                                onChange={(event) => setTitulo(event.target.value)}
-                            />
-                            <List>
-                                <ListItemButton onClick={() => setShowProjetos(!showProjetos)}>
+                {projetos.map(
+                    projeto => {
+                        return (
+                            <List key={projeto.id}>
+                                <ListItemButton onClick={() => setShowTarefas(!showTarefas)}>
                                     <ListItemIcon>
                                         <AllInboxIcon />
                                     </ListItemIcon>
                                     <ListItemText>
-                                        Projetos
+                                        {projeto.titulo}
                                     </ListItemText>
-                                    {showProjetos ? <ExpandLess /> : <ExpandMore />}
+                                    {showTarefas ? <ExpandLess /> : <ExpandMore />}
                                 </ListItemButton>
-                                <Collapse in={showProjetos} timeout="auto" unmountOnExit>
-                                    <List key={projetos.id}>
-                                        <ListItemButton selected={selectedProjeto === null} onClick={(event) => onSelectProjeto(event, null)}>
-                                            <ListItemIcon><InboxIcon /></ListItemIcon>
-                                            <ListItemText>Caixa de Entrada</ListItemText>
+
+                                <Collapse in={showTarefas} timeout="auto" unmountOnExit>
+                                    {tarefas.filter(tarefa => tarefa.feita === feita && tarefa.projeto === projeto.id).map(
+                                        tarefa => {
+                                            return (
+                                                <Card className={'item-list-card'} key={tarefa.id}>
+                                                    <Checkbox checked={tarefa.feita} value={tarefa.id} onChange={({ target }) => onChange(target, tarefa)} />
+                                                    {tarefa.titulo}
+                                                </Card>
+                                            )
+                                        }
+                                    )}
+                                </Collapse>
+                                <Dialog open={adding}>
+                                    <TextField autoFocus={true} margin="dense" id="descricao" label="Tarefa" type="text" fullWidth={true}
+                                        onChange={(event) => setTitulo(event.target.value)}
+                                    />
+                                    <List>
+                                        <ListItemButton onClick={() => setShowProjetos(!showProjetos)}>
+                                            <ListItemIcon>
+                                                <AllInboxIcon />
+                                            </ListItemIcon>
+                                            <ListItemText>
+                                                Projetos
+                                            </ListItemText>
+                                            {showProjetos ? <ExpandLess /> : <ExpandMore />}
                                         </ListItemButton>
-                                    </List>
-                                    {projetos.map(projetos => {
-                                        return (
+                                        <Collapse in={showProjetos} timeout="auto" unmountOnExit>
                                             <List key={projetos.id}>
-                                                <ListItemButton selected={selectedProjeto === projetos.id}
-                                                    onClick={(event) => onSelectProjeto(event, projetos.id)}>
-                                                    <ListItemIcon><InboxIcon /></ListItemIcon>
-                                                    <ListItemText>{projetos.titulo}</ListItemText>
+                                                <ListItemButton selected={selectedProjeto === null} onClick={(event) => onSelectProjeto(event, null)}>
+                                                    <ListItemIcon>
+                                                        <InboxIcon />
+                                                    </ListItemIcon>
+                                                    <ListItemText>
+                                                        Caixa de Entrada
+                                                    </ListItemText>
                                                 </ListItemButton>
                                             </List>
-                                        )
-                                    })}
-                                </Collapse>
 
+                                            <List >
+                                                {projetos.map(
+                                                    projetos => {
+                                                        return (
+                                                            <ListItemButton selected={selectedProjeto === projetos.id}
+                                                                onClick={(event) => onSelectProjeto(event, projetos.id)}
+                                                                key={projetos.id}
+                                                            >
+                                                                <ListItemIcon>
+                                                                    <InboxIcon />
+                                                                </ListItemIcon>
+                                                                <ListItemText>
+                                                                    {projetos.titulo}
+                                                                </ListItemText>
+                                                            </ListItemButton>
+
+                                                        )
+                                                    })}
+                                            </List>
+                                        </Collapse>
+
+                                    </List>
+                                    <Button variant='contained' color="primary" onClick={() => aoSalvar()} sx={{color: 'green'}}>
+                                        Salvar
+                                    </Button>
+                                    <Button variant='contained' color="secondary" onClick={() => setAdding(false)}>
+                                        Cancelar
+                                    </Button>
+                                </Dialog>
                             </List>
-                            <Button variant='contained' color="primary" onClick={() => aoSalvar()}>
-                                Salvar
-                            </Button>
-                            <Button variant='contained' color="secondary" onClick={() => setAdding(false)}>
-                                Cancelar
-                            </Button>
-                        </Card>
+                        )
                     }
-                </ul>
+                )}
             </List>
-
             {!feita && <Fab onClick={onClickToAdd} className={'fab-button'} color="primary"><AddIcon /></Fab>}
         </>
     )
