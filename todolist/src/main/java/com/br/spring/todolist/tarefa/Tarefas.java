@@ -1,4 +1,4 @@
-package com.br.spring.todolist;
+package com.br.spring.todolist.tarefa;
 
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;

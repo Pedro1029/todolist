@@ -1,4 +1,4 @@
-package com.br.spring.todolist;
+package com.br.spring.todolist.main;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

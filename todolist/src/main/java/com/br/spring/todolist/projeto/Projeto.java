@@ -1,5 +1,6 @@
-package com.br.spring.todolist;
+package com.br.spring.todolist.projeto;
 
+import com.br.spring.todolist.tarefa.Tarefa;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;

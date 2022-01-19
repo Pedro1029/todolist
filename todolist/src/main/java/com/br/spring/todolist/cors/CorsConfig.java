@@ -1,4 +1,4 @@
-package com.br.spring.todolist;
+package com.br.spring.todolist.cors;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
