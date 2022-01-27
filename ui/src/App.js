@@ -3,12 +3,21 @@ import './App.css';
 import { useState } from 'react'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import { Button, Icon, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
-import { AddTarefa } from './AddTarefa'
+import ListItemButton from '@mui/material/ListItemButton';
+import AllInboxIcon from '@mui/icons-material/AllInbox';
+import PersonIcon from '@mui/icons-material/Person';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import SwitchAccountIcon from '@mui/icons-material/SwitchAccount';
+import { ExpandLess, ExpandMore } from '@mui/icons-material/';
+import { Collapse } from '@mui/material';
+import { AddTarefa } from './AddTarefa.js'
 
 function App() {
 
   const [showMenu, setShowMenu] = useState(true)
-  
+  const [showTarefas, setShowTarefas] = useState(false)
+  const [showUsuario, setShowUsuario] = useState(false)
+
   return (
 
     <>
@@ -25,21 +34,50 @@ function App() {
 
             <List>
 
-              <ListItem button={true} component={Link} {...{ to: "/pendentes" }}>
+              <ListItemButton onClick={() => setShowTarefas(!showTarefas)} button={true} component={Link} {...{ to: "/tarefas" }}>
+                <ListItemIcon>
+                  <AllInboxIcon />
+                </ListItemIcon>
+                <ListItemText>
+                  Tarefas
+                </ListItemText>
+                {showTarefas ? <ExpandLess /> : <ExpandMore />}
+              </ListItemButton>
+              <Collapse in={showTarefas} timeout="auto" unmountOnExit>
+                <ListItemButton sx={{ pl: 4 }} button={true} component={Link} {...{ to: "/tarefas/pendentes" }}>
+                  <ListItemIcon><Icon>list</Icon></ListItemIcon>
+                  <ListItemText>Pendentes</ListItemText>
+                </ListItemButton>
+                <ListItemButton sx={{ pl: 4 }} button={true} component={Link} {...{ to: "/tarefas/feitas" }}>
+                  <ListItemIcon><Icon>checked</Icon></ListItemIcon>
+                  <ListItemText>Feitas</ListItemText>
+                </ListItemButton>
+              </Collapse>
 
-                <ListItemIcon><Icon>list</Icon></ListItemIcon>
-                <ListItemText>Pendentes</ListItemText>
-
-              </ListItem>
-
-              <ListItem button={true} component={Link} {...{ to: "/feitas" }}>
-
-                <ListItemIcon><Icon>checked</Icon></ListItemIcon>
-                <ListItemText>Feitas</ListItemText>
-
-              </ListItem>
+              <ListItemButton onClick={() => setShowUsuario(!showUsuario)} button={true} component={Link} {...{ to: "/usuario" }}>
+                <ListItemIcon>
+                  <PersonIcon />
+                </ListItemIcon>
+                <ListItemText>
+                  Usuário
+                </ListItemText>
+                {showUsuario ? <ExpandLess /> : <ExpandMore />}
+              </ListItemButton>
+              <Collapse in={showUsuario} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                  <ListItemButton sx={{ pl: 4 }} button={true} component={Link} {...{ to: "/usuario/cadastro" }}>
+                    <ListItemIcon fontSize="small"><PersonAddIcon /></ListItemIcon>
+                    <ListItemText>Cadastrar Usuário</ListItemText>
+                  </ListItemButton>
+                  <ListItemButton sx={{ pl: 4 }} button={true} component={Link} {...{ to: "/usuario/trocar" }}>
+                    <ListItemIcon><Icon><SwitchAccountIcon /></Icon></ListItemIcon>
+                    <ListItemText>Trocar Usuário</ListItemText>
+                  </ListItemButton>
+                </List>
+              </Collapse>
 
             </List>
+
           </div>
 
           <div className="sidebar-body-div">
@@ -47,8 +85,8 @@ function App() {
             <div className="sidebar-body-div-outlet">
 
               <Routes>
-                <Route path="/pendentes" element={<AddTarefa feita={false}/>}/>
-                <Route path="/feitas" element={<AddTarefa feita={true}/>}/>
+                <Route path="/tarefas/pendentes" element={<AddTarefa feita={false} />} />
+                <Route path="/tarefas/feitas" element={<AddTarefa feita={true} />} />
               </Routes>
 
             </div>

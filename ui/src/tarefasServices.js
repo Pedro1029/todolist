@@ -1,4 +1,5 @@
 export function salvar(tarefa) {
+    console.log(tarefa)
     const headers = new Headers({
         "Content-Type": "application/json",
     });
@@ -9,20 +10,30 @@ export function salvar(tarefa) {
         cache: 'default',
         body: JSON.stringify(tarefa)
     };
+    console.log(request);
     return fetch(`http://localhost:8080/tarefa`, request).then(response => response.json());
 }
 
-export function findAllPendentes(){
-    const headers = new Headers({
-        "Content-Type": "application/json",
-    });
-    const request = {
-        method: 'GET',
-        headers: headers,
-        mode: 'cors',
-        cache: 'default',
-    };
-    return fetch('http://localhost:8080/tarefas/pendente', request).then(response => response.json());
+export async function findAllPendentes(){
+
+    const url = 'http://localhost:8080/tarefas/pendente'
+    const dados = await fetch(url)
+    const pendentes = await dados.json();
+    
+
+    return pendentes
+
+    // const headers = new Headers({
+    //     "Content-Type": "application/json",
+        
+    // });
+    // const request = {
+    //     method: 'GET',
+    //     headers: headers,
+    //     mode: 'cors',
+    //     cache: 'default',
+    // };
+    // return fetch('http://localhost:8080/tarefas/pendente');
 }
 
 export function findAllFeitas() {
@@ -78,3 +89,4 @@ export function findAllProjetos(){
     };
     return fetch('http://localhost:8080/projetos', request).then(response => response.json());
 }
+

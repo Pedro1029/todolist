@@ -1,4 +1,4 @@
-package com.br.spring.todolist.projeto;
+package com.br.spring.todolist;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;

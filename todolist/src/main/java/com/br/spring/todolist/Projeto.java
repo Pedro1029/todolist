@@ -1,6 +1,7 @@
-package com.br.spring.todolist.projeto;
+package com.br.spring.todolist;
 
-import com.br.spring.todolist.tarefa.Tarefa;
+import com.br.spring.todolist.Tarefa;
+import com.br.spring.todolist.Usuario;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
@@ -10,6 +11,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -28,10 +31,14 @@ public class Projeto implements Serializable {
     private Long id;
     @Column
     private String titulo;
-    
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "projetos")
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "projeto")
     private List<Tarefa> tarefas;
-    
+
+    @ManyToOne
+    @JoinColumn(name = "id_usuario")
+    private Usuario usuario;
+
     public Long getId() {
         return id;
     }
@@ -54,6 +61,14 @@ public class Projeto implements Serializable {
 
     public void setTarefas(List<Tarefa> tarefas) {
         this.tarefas = tarefas;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     @Override

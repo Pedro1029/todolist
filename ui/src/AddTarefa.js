@@ -35,6 +35,7 @@ export function AddTarefa({ feita }) {
         if (!feita) {
             const tarefasPendentes = await findAllPendentes();
             setTarefas(tarefasPendentes);
+            console.log(tarefas)
         } else {
             const tarefasFeitas = await findAllFeitas();
             setTarefas(tarefasFeitas);
@@ -69,6 +70,17 @@ export function AddTarefa({ feita }) {
                 titulo,
                 feita: false,
                 projeto: selectedProjeto,
+                usuario: {
+                    id: 1,
+                    nome: "Pedro",
+                    email: null,
+                    cep: null,
+                    endereco: null,
+                    numro: null,
+                    bairro: null,
+                    cidade: null,
+                    estado: null,
+                }
             }
         );
         setAdding(false)
@@ -77,6 +89,7 @@ export function AddTarefa({ feita }) {
     }
 
     function onClickToAdd() {
+        console.log(adding)
         setAdding(!adding)
     }
 
@@ -131,7 +144,14 @@ export function AddTarefa({ feita }) {
                                         }
                                     )}
                                 </Collapse>
-                                <Dialog open={adding}>
+                            </List>
+                        )
+                    }
+                )}
+            </List>
+            {!feita && <Fab onClick={onClickToAdd} className={'fab-button'} color="primary"><AddIcon /></Fab>}
+
+            <Dialog open={adding}>
                                     <TextField autoFocus={true} margin="dense" id="descricao" label="Tarefa" type="text" fullWidth={true}
                                         onChange={(event) => setTitulo(event.target.value)}
                                     />
@@ -179,19 +199,13 @@ export function AddTarefa({ feita }) {
                                         </Collapse>
 
                                     </List>
-                                    <Button variant='contained' color="primary" onClick={() => aoSalvar()} sx={{color: 'green'}}>
+                                    <Button variant='contained' color="primary" onClick={() => aoSalvar()} sx={{ color: 'green' }}>
                                         Salvar
                                     </Button>
                                     <Button variant='contained' color="secondary" onClick={() => setAdding(false)}>
                                         Cancelar
                                     </Button>
                                 </Dialog>
-                            </List>
-                        )
-                    }
-                )}
-            </List>
-            {!feita && <Fab onClick={onClickToAdd} className={'fab-button'} color="primary"><AddIcon /></Fab>}
         </>
     )
 
